@@ -1,19 +1,41 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_application/Presenter/pokemon_presenter.dart';
+import '../Entity/pokemon.dart';
 
-class PokemonView extends StatefulWidget{
-  const PokemonView({super.key});
+class PokemonView extends StatelessWidget {
+  const PokemonView({super.key, required this.pokemon});
 
-  @override
-  State<StatefulWidget> createState() => _PokemonViewState();
-}
-
-class _PokemonViewState extends State<PokemonView>{
-  late PokemonPresenter pokemonPresenter;
+  final Pokemon pokemon;
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    throw UnimplementedError();
+    List<Widget> types = [];
+
+    // for (var t in pokemon.types) {
+    //   types.add(Container(
+    //     decoration: BoxDecoration(
+    //       color: t.color,
+    //     ),
+    //     child: Text(t.name),
+    //   ));
+    // }
+
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
+        title: Text(pokemon.name),
+      ),
+      body: Center(
+        child: Column(
+          children: [
+            Text('Name: ${pokemon.name}'),
+            Text('Weight: ${pokemon.weight}'),
+            Text('Height: ${pokemon.height}'),
+            Wrap(
+              children: types,
+            )
+          ],
+        ),
+      ),
+    );
   }
 }

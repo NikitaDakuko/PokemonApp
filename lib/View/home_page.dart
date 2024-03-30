@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/Presenter/pokemon_presenter.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -11,11 +10,24 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final PokemonPresenter pokemonPresenter = PokemonPresenter();
   late Widget pm = const Text("this is where I'd put my data");
 
-  void _getPokemon(context) async{
-    pm = await PokemonPresenter(pokemonInteractor: PokemonInteractor(), context: context).pokemonlist();
-    setState(() {});
+  void _getPokemon(context) async {
+    Map<String, String> pl = await pokemonPresenter.pokemonlist();
+    pm = Wrap(
+      children: [
+        for (MapEntry<String, String> s in pl.entries)
+          SizedBox(
+            width: 100,
+            child: FloatingActionButton(
+              onPressed: () =>
+                  {pokemonPresenter.presentPokemon(context, s.value)},
+              child: Text(s.key),
+            ),
+          ),
+      ],
+    );
   }
 
   @override
@@ -34,7 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => _getPokemon(context),
+        onPressed: () => setState(() {
+          _getPokemon(context);
+        }),
       ),
     );
   }
