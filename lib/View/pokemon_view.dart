@@ -10,14 +10,14 @@ class PokemonView extends StatelessWidget {
   Widget build(BuildContext context) {
     List<Widget> types = [];
 
-    // for (var t in pokemon.types) {
-    //   types.add(Container(
-    //     decoration: BoxDecoration(
-    //       color: t.color,
-    //     ),
-    //     child: Text(t.name),
-    //   ));
-    // }
+    for (var t in pokemon.types) {
+      types.add(Container(
+        decoration: BoxDecoration(
+          color: t.color,
+        ),
+        child: Text(t.name),
+      ));
+    }
 
     return Scaffold(
       appBar: AppBar(

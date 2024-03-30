@@ -4,19 +4,24 @@ class Pokemon {
   Pokemon({
     required this.name,
     required this.weight,
-    this.types,
-    required this.height});
+    required this.types,
+    required this.height,
+  });
 
   String name;
-  List<PokeType>? types;
+  List<PokeType> types;
   int weight;
   int height;
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     return Pokemon(
-        name: json['name'],
-        //types: json['types.type'],
-        weight: json['weight'],
-        height: json['height']);
+      name: json['name'],
+      weight: json['weight'],
+      height: json['height'],
+      types: (json['types'] as List)
+          .cast<Map<String, dynamic>>()
+          .map((e) => PokeType.values.byName(e['type']['name']))
+          .toList(),
+    );
   }
 }
