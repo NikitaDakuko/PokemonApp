@@ -3,12 +3,14 @@ import 'enum_poke_type.dart';
 class Pokemon {
   Pokemon({
     required this.name,
-    required this.weight,
+    this.pictureURL = '',
     required this.types,
+    required this.weight,
     required this.height,
   });
 
   String name;
+  String pictureURL;
   List<PokeType> types;
   int weight;
   int height;
@@ -16,6 +18,7 @@ class Pokemon {
   factory Pokemon.fromJson(Map<String, dynamic> json) {
     return Pokemon(
       name: json['name'],
+      pictureURL: json['sprites']['front_default'],
       weight: json['weight'],
       height: json['height'],
       types: (json['types'] as List)
