@@ -12,14 +12,15 @@ class PokemonInteractor {
     return Pokemon.fromJson(parsedJson);
   }
 
-  Future<Map<String, String>> fetchListOfPokemon(http.Client client) async {
+  Future<Map<String, String>> fetchListOfPokemon(http.Client client, int limit, int offset) async {
     final response =
-        await client.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/'));
+        await client.get(Uri.parse('https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
 
     return compute(parseListOfPokemon, response.body);
   }
 
   Map<String, String> parseListOfPokemon(String responseBody) {
+    //maxCount = jsonDecode(responseBody)['count'];
     final parsed = (jsonDecode(responseBody)['results'] as List)
         .cast<Map<String, dynamic>>();
 

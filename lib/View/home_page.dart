@@ -11,23 +11,29 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final PokemonPresenter pokemonPresenter = PokemonPresenter();
-  late Widget pm = const Text("this is where I'd put my data");
+  late List<Widget> pm = [];
 
-  void _getPokemon(context) async {
-    Map<String, String> pl = await pokemonPresenter.pokemonlist();
-    pm = Wrap(
-      children: [
-        for (MapEntry<String, String> s in pl.entries)
-          SizedBox(
-            width: 100,
-            child: FloatingActionButton(
-              onPressed: () =>
-                  {pokemonPresenter.presentPokemon(context, s.value)},
-              child: Text(s.key),
-            ),
-          ),
-      ],
-    );
+  void _getPokemon(BuildContext context, int limit) async {
+    Map<String, String> pl = await pokemonPresenter.nextPage(limit);
+    setState(() {
+      for (MapEntry<String, String> s in pl.entries) {
+        pm.add(SizedBox(
+            width: 500,
+            child: TextButton(
+                onPressed: () =>
+                    {pokemonPresenter.presentPokemon(context, s.value)},
+                child: Text(
+                  s.key,
+                  style: const TextStyle(fontSize: 32),
+                ))));
+      }
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _getPokemon(context, 20);
   }
 
   @override
@@ -38,17 +44,17 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            pm,
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            children: pm,
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => setState(() {
-          _getPokemon(context);
-        }),
+        child: const Icon(Icons.refresh),
+        onPressed: () {
+          _getPokemon(context, 20);
+        },
       ),
     );
   }

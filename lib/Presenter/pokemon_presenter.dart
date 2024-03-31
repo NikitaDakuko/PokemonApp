@@ -5,10 +5,17 @@ import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/router.dart';
 
 class PokemonPresenter {
-  PokemonPresenter();
+  int offset = 0;
 
-  Future<Map<String, String>> pokemonlist() async {
-    return await PokemonInteractor().fetchListOfPokemon(http.Client());
+  Future<Map<String, String>> nextPage(int limit) async{
+    final pl = await pokemonList(limit, offset);
+    offset += limit;
+    return pl;
+  }
+
+
+  Future<Map<String, String>> pokemonList(int limit, int offset) async {
+    return await PokemonInteractor().fetchListOfPokemon(http.Client(), limit, offset);
   }
 
   Future<Pokemon> getPokemon(String url) async {
