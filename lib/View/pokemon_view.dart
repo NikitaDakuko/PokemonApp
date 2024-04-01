@@ -9,65 +9,58 @@ class PokemonView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<Widget> types = [];
-
-    for (var t in pokemon.types) {
-      types.add(
-        Container(
-          margin: const EdgeInsets.all(5.0),
-          padding: const EdgeInsets.all(5.0),
-          decoration: BoxDecoration(
-            color: t.color,
-            borderRadius: BorderRadius.circular(10.0),
-          ),
-          child: Text(
-            t.name,
-            style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w200,
-                color: t.color.computeLuminance() < 0.5
-                    ? Colors.white
-                    : Colors.black),
-          ),
-        ),
-      );
-    }
-
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(pokemon.name),
       ),
-      body: Expanded(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.network(
-              pokemon.pictureURL,
-              scale: 0.3,
-            ),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'Name: ${pokemon.name}',
-                  style: ts,
-                ),
-                Text(
-                  'Weight: ${pokemon.weight}',
-                  style: ts,
-                ),
-                Text(
-                  'Height: ${pokemon.height}',
-                  style: ts,
-                ),
-                Wrap(
-                  children: types,
-                )
-              ],
-            ),
-          ],
-        ),
+      body: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.network(
+            pokemon.pictureURL,
+            scale: 0.3,
+          ),
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                'Name: ${pokemon.name}',
+                style: ts,
+              ),
+              Text(
+                'Weight: ${pokemon.weight}',
+                style: ts,
+              ),
+              Text(
+                'Height: ${pokemon.height}',
+                style: ts,
+              ),
+              Wrap(
+                children: [
+                  for (var t in pokemon.types)
+                    Container(
+                      margin: const EdgeInsets.all(5.0),
+                      padding: const EdgeInsets.all(5.0),
+                      decoration: BoxDecoration(
+                        color: t.color,
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
+                      child: Text(
+                        t.name,
+                        style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w200,
+                            color: t.color.computeLuminance() < 0.5
+                                ? Colors.white
+                                : Colors.black),
+                      ),
+                    ),
+                ],
+              )
+            ],
+          ),
+        ],
       ),
     );
   }

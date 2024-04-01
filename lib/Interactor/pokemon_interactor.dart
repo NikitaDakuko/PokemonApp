@@ -5,14 +5,15 @@ import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:http/http.dart' as http;
 
 class PokemonInteractor {
-  Future<Pokemon> fetchPokemon(http.Client client, String url) async {
-    final response = await client.get(Uri.parse(url));
+  Future<Pokemon> fetchPokemon(http.Client client, id) async {
+    final response =
+        await client.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$id/'));
 
     final parsedJson = (jsonDecode(response.body));
     return Pokemon.fromJson(parsedJson);
   }
 
-  Future<Map<String, String>> fetchListOfPokemon(
+  Future<Map<String, dynamic>> fetchListOfPokemon(
       http.Client client, int limit, int offset) async {
     final response = await client.get(Uri.parse(
         'https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
@@ -20,14 +21,17 @@ class PokemonInteractor {
     return compute(parseListOfPokemon, response.body);
   }
 
-  Map<String, String> parseListOfPokemon(String responseBody) {
+  Map<String, dynamic> parseListOfPokemon(String responseBody) {
     //maxCount = jsonDecode(responseBody)['count'];
     final parsed = (jsonDecode(responseBody)['results'] as List)
         .cast<Map<String, dynamic>>();
 
     return Map.fromIterables(
       parsed.map<String>((json) => json['name']).toList(),
-      parsed.map<String>((json) => json['url']).toList(),
+      parsed.map<String>((json) {
+        String s = json['url'];
+        return s.substring(34, s.length - 1);
+      }).toList(),
     );
   }
 }

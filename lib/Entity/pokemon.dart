@@ -2,6 +2,7 @@ import 'enum_poke_type.dart';
 
 class Pokemon {
   const Pokemon({
+    required this.id,
     required this.name,
     required this.pictureURL,
     required this.types,
@@ -9,6 +10,7 @@ class Pokemon {
     required this.height,
   });
 
+  final int id;
   final String name;
   final String pictureURL;
   final List<PokeType> types;
@@ -17,6 +19,7 @@ class Pokemon {
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'id': id,
       'name': name,
       'pictureURL': pictureURL,
       'typesParsed': types,
@@ -27,6 +30,7 @@ class Pokemon {
 
   factory Pokemon.fromMap(Map<String, dynamic> map) {
     return Pokemon(
+      id: map['id'],
       name: map['name'],
       pictureURL: map['pictureURL'],
       types: map['typesParsed'],
@@ -35,7 +39,7 @@ class Pokemon {
     );
   }
 
-  factory Pokemon.fromJson(Map<String, dynamic> json){
+  factory Pokemon.fromJson(Map<String, dynamic> json) {
     json['pictureURL'] = json['sprites']['front_default'];
     json['typesParsed'] = (json['types'] as List)
         .cast<Map<String, dynamic>>()

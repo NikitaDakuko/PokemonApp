@@ -14,9 +14,9 @@ class _MyHomePageState extends State<MyHomePage> {
   late List<Widget> pm = [];
 
   void _getPokemon(BuildContext context, int limit) async {
-    Map<String, String> pl = await pokemonPresenter.nextPage(limit);
+    Map<String, dynamic> pl = await pokemonPresenter.nextPage(limit);
     setState(() {
-      for (MapEntry<String, String> s in pl.entries) {
+      for (MapEntry<String, dynamic> s in pl.entries) {
         pm.add(SizedBox(
             width: 500,
             child: TextButton(
