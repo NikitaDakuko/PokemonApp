@@ -12,9 +12,10 @@ class PokemonInteractor {
     return Pokemon.fromJson(parsedJson);
   }
 
-  Future<Map<String, String>> fetchListOfPokemon(http.Client client, int limit, int offset) async {
-    final response =
-        await client.get(Uri.parse('https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
+  Future<Map<String, String>> fetchListOfPokemon(
+      http.Client client, int limit, int offset) async {
+    final response = await client.get(Uri.parse(
+        'https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
 
     return compute(parseListOfPokemon, response.body);
   }

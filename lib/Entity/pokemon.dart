@@ -1,30 +1,47 @@
 import 'enum_poke_type.dart';
 
 class Pokemon {
-  Pokemon({
+  const Pokemon({
     required this.name,
-    this.pictureURL = '',
+    required this.pictureURL,
     required this.types,
     required this.weight,
     required this.height,
   });
 
-  String name;
-  String pictureURL;
-  List<PokeType> types;
-  int weight;
-  int height;
+  final String name;
+  final String pictureURL;
+  final List<PokeType> types;
+  final int weight;
+  final int height;
 
-  factory Pokemon.fromJson(Map<String, dynamic> json) {
+  Map<String, dynamic> toMap() {
+    return <String, dynamic>{
+      'name': name,
+      'pictureURL': pictureURL,
+      'typesParsed': types,
+      'weight': weight,
+      'height': height,
+    };
+  }
+
+  factory Pokemon.fromMap(Map<String, dynamic> map) {
     return Pokemon(
-      name: json['name'],
-      pictureURL: json['sprites']['front_default'],
-      weight: json['weight'],
-      height: json['height'],
-      types: (json['types'] as List)
-          .cast<Map<String, dynamic>>()
-          .map((e) => PokeType.values.byName(e['type']['name']))
-          .toList(),
+      name: map['name'],
+      pictureURL: map['pictureURL'],
+      types: map['typesParsed'],
+      weight: map['weight'],
+      height: map['height'],
     );
+  }
+
+  factory Pokemon.fromJson(Map<String, dynamic> json){
+    json['pictureURL'] = json['sprites']['front_default'];
+    json['typesParsed'] = (json['types'] as List)
+        .cast<Map<String, dynamic>>()
+        .map((e) => PokeType.values.byName(e['type']['name']))
+        .toList();
+
+    return Pokemon.fromMap(json);
   }
 }
