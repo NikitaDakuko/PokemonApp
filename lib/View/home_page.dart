@@ -12,6 +12,7 @@ class MyHomePage extends StatefulWidget {
 class _MyHomePageState extends State<MyHomePage> {
   final PokemonPresenter pokemonPresenter = PokemonPresenter();
   late List<Widget> pm = [];
+  late List<Widget> pmdb = [];
 
   void _getPokemon(BuildContext context, int limit) async {
     Map<String, dynamic> pl = await pokemonPresenter.nextPage(limit);
@@ -30,10 +31,28 @@ class _MyHomePageState extends State<MyHomePage> {
     });
   }
 
+  void _getDBPokemon(BuildContext context, int limit) async {
+    Map<String, dynamic> pl = await pokemonPresenter.nextPageDB(limit);
+    setState(() {
+      for (MapEntry<String, dynamic> s in pl.entries) {
+        pmdb.add(SizedBox(
+            width: 500,
+            child: TextButton(
+                onPressed: () =>
+                    {pokemonPresenter.presentPokemon(context, s.value)},
+                child: Text(
+                  s.key,
+                  style: const TextStyle(fontSize: 32),
+                ))));
+      }
+    });
+  }
+
   @override
   void initState() {
     super.initState();
     _getPokemon(context, 20);
+    _getDBPokemon(context, 20);
   }
 
   @override
@@ -44,12 +63,20 @@ class _MyHomePageState extends State<MyHomePage> {
         title: Text(widget.title),
       ),
       body: Center(
-        child: SingleChildScrollView(
-          child: Column(
-            children: pm,
+          child: Row(
+        children: [
+          SingleChildScrollView(
+            child: Column(
+              children: pm,
+            ),
           ),
-        ),
-      ),
+          SingleChildScrollView(
+            child: Column(
+              children: pmdb,
+            ),
+          ),
+        ],
+      )),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.refresh),
         onPressed: () {

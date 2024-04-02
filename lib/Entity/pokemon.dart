@@ -1,7 +1,9 @@
+import 'package:hive/hive.dart';
 import 'enum_poke_type.dart';
 
-class Pokemon {
-  const Pokemon({
+@HiveType(typeId: 0)
+class Pokemon extends HiveObject {
+  Pokemon({
     required this.id,
     required this.name,
     required this.pictureURL,
@@ -10,42 +12,29 @@ class Pokemon {
     required this.height,
   });
 
+  @HiveField(0)
   final int id;
+  @HiveField(1)
   final String name;
+  @HiveField(2)
   final String pictureURL;
   final List<PokeType> types;
+  @HiveField(3)
   final int weight;
+  @HiveField(4)
   final int height;
 
-  Map<String, dynamic> toMap() {
-    return <String, dynamic>{
-      'id': id,
-      'name': name,
-      'pictureURL': pictureURL,
-      'typesParsed': types,
-      'weight': weight,
-      'height': height,
-    };
-  }
-
-  factory Pokemon.fromMap(Map<String, dynamic> map) {
-    return Pokemon(
-      id: map['id'],
-      name: map['name'],
-      pictureURL: map['pictureURL'],
-      types: map['typesParsed'],
-      weight: map['weight'],
-      height: map['height'],
-    );
-  }
-
   factory Pokemon.fromJson(Map<String, dynamic> json) {
-    json['pictureURL'] = json['sprites']['front_default'];
-    json['typesParsed'] = (json['types'] as List)
-        .cast<Map<String, dynamic>>()
-        .map((e) => PokeType.values.byName(e['type']['name']))
-        .toList();
-
-    return Pokemon.fromMap(json);
+    return Pokemon(
+      id: json['id'],
+      name: json['name'],
+      pictureURL: json['sprites']['front_default'],
+      types: (json['types'] as List)
+          .cast<Map<String, dynamic>>()
+          .map((e) => PokeType.values.byName(e['type']['name']))
+          .toList(),
+      weight: json['weight'],
+      height: json['height'],
+    );
   }
 }
