@@ -33,22 +33,21 @@ class PokemonInteractor {
 
     return Map.fromIterables(
       parsed.map<String>((json) => json['name']).toList(),
-      parsed.map<String>((json) {
+      parsed.map<int>((json) {
         String s = json['url'];
-        return s.substring(34, s.length - 1);
+        return int.parse(s.substring(34, s.length - 1));
       }).toList(),
     );
   }
 
-  Future<Map<String, dynamic>> fetchListOfPokemonFromDB(int limit, int offset) async {
-    List<Pokemon> list = await cache.getListPokemon(limit: limit, offset: offset);
-    return {
-      for(var p in list)
-        p.name: p.id
-    };
+  Future<Map<String, dynamic>> fetchListOfPokemonFromDB(
+      int limit, int offset) async {
+    List<Pokemon> list =
+        await cache.getListPokemon(limit: limit, offset: offset);
+    return {for (var p in list) p.name: p.id};
   }
 
-  Future<Pokemon?> fetchPokemonFromDB(id) async{
-    return cache.getPokemon(id);
+  Future<Pokemon> fetchPokemonFromDB(id) async {
+    return await cache.getPokemon(id);
   }
 }

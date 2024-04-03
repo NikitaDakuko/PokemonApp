@@ -4,31 +4,30 @@ import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/router.dart';
 
 class PokemonPresenter {
-  PokemonInteractor pokemonInteractor = PokemonInteractor();
+  final PokemonInteractor pokemonInteractor = PokemonInteractor();
   int offset = 0;
 
-  Future<Map<String, dynamic>> nextPage(int limit) async{
+  Future<Map<String, dynamic>> nextPage(int limit) async {
     final pl = await pokemonList(limit, offset);
     offset += limit;
     return pl;
   }
 
-  Future<Map<String, dynamic>> nextPageDB(int limit) async{
-    final pl = await pokemonListDB(limit, offset);
-    offset += limit;
-    return pl;
-  }
-
   Future<Map<String, dynamic>> pokemonList(int limit, int offset) async {
-    return await pokemonInteractor.fetchListOfPokemon(http.Client(), limit, offset);
-  }
-
-  Future<Map<String, dynamic>> pokemonListDB(int limit, int offset) async {
-    return await pokemonInteractor.fetchListOfPokemonFromDB(limit, offset);
+    try {
+      return await pokemonInteractor.fetchListOfPokemon(
+          http.Client(), limit, offset);
+    } catch (e) {
+      return await pokemonInteractor.fetchListOfPokemonFromDB(limit, offset);
+    }
   }
 
   Future<Pokemon> getPokemon(id) async {
-    return await pokemonInteractor.fetchPokemon(http.Client(), id);
+    try {
+      return await pokemonInteractor.fetchPokemon(http.Client(), id);
+    } catch (e) {
+      return pokemonInteractor.fetchPokemonFromDB(id);
+    }
   }
 
   void presentPokemon(context, id) async {

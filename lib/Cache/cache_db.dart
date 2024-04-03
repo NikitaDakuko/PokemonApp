@@ -14,9 +14,9 @@ class CacheDB {
     return [for (Pokemon p in database.values) p];
   }
 
-  Future<Pokemon?> getPokemon(int id) async {
+  Future<Pokemon> getPokemon(int id) async {
     await openDB();
-    return database.get(id);
+    return database.get(id)!;
   }
 
   Future insertPokemon(Pokemon pokemon) async {
