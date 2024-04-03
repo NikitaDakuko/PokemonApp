@@ -38,4 +38,9 @@ class Pokemon extends HiveObject {
       height: json['height'],
     );
   }
+
+  @override
+  String toString() {
+    return '$id\n $name\n $pictureURL\n ${types.toString()}\n $weight\n $height\n';
+  }
 }

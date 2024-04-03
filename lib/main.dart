@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:hive/hive.dart';
+import 'package:hive_flutter/hive_flutter.dart';
 import 'package:pokemon_application/Cache/poke_type_adapter.dart';
 import 'package:pokemon_application/Cache/pokemon_adapter.dart';
 
