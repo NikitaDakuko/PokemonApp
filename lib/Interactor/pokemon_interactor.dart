@@ -1,6 +1,5 @@
 import 'dart:convert';
 
-import 'package:flutter/foundation.dart';
 import 'package:pokemon_application/Cache/cache_db.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:http/http.dart' as http;
@@ -23,7 +22,7 @@ class PokemonInteractor {
     final response = await client.get(Uri.parse(
         'https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
 
-    return compute(parseListOfPokemon, response.body);
+    return parseListOfPokemon(response.body);
   }
 
   Map<String, dynamic> parseListOfPokemon(String responseBody) {

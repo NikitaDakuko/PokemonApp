@@ -11,13 +11,14 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final PokemonPresenter pokemonPresenter = PokemonPresenter();
-  late List<Widget> pm = [];
+  late List<Widget> pokemonList = [];
 
   void _getPokemon(BuildContext context, int limit) async {
     Map<String, dynamic> pl = await pokemonPresenter.nextPage(limit);
     setState(() {
+      List<Widget> newList = [];
       for (MapEntry<String, dynamic> s in pl.entries) {
-        pm.add(SizedBox(
+        newList.add(SizedBox(
             width: 500,
             child: TextButton(
                 onPressed: () =>
@@ -27,6 +28,7 @@ class _MyHomePageState extends State<MyHomePage> {
                   style: const TextStyle(fontSize: 32),
                 ))));
       }
+      pokemonList = newList;
     });
   }
 
@@ -46,7 +48,7 @@ class _MyHomePageState extends State<MyHomePage> {
       body: Center(
         child: SingleChildScrollView(
           child: Column(
-            children: pm,
+            children: pokemonList,
           ),
         ),
       ),

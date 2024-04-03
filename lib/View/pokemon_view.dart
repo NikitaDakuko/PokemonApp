@@ -15,8 +15,7 @@ class PokemonView extends StatelessWidget {
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(pokemon.name),
       ),
-      body: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+      body: Wrap(
         children: [
           Image.network(
             pokemon.pictureURL,

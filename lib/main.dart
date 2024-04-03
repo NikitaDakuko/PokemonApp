@@ -6,6 +6,7 @@ import 'package:pokemon_application/Cache/pokemon_adapter.dart';
 import 'View/home_page.dart';
 
 void main() {
+  Hive.initFlutter();
   Hive.registerAdapter(PokemonAdapter());
   Hive.registerAdapter(PokeTypeAdapter());
   runApp(const MyApp());
