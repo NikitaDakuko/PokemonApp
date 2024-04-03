@@ -1,5 +1,8 @@
 import 'dart:ui';
 
+import 'package:hive/hive.dart';
+
+@HiveType(typeId: 2)
 enum PokeType {
   normal(Color(0xFFa8a878)),
   fire(Color(0xFFf08030)),

@@ -7,12 +7,14 @@ class PokemonAdapter extends TypeAdapter<Pokemon> {
 
   @override
   Pokemon read(BinaryReader reader) {
-    final id = reader.read();
-    final name = reader.read();
-    final pictureURL = reader.read();
-    final weight = reader.read();
-    final height = reader.read();
-    return Pokemon(id: id, name: name, pictureURL: pictureURL, types: [], weight: weight, height: height);
+    return Pokemon(
+      id: reader.read(),
+      name: reader.read(),
+      pictureURL: reader.read(),
+      types: reader.readList(),
+      weight: reader.read(),
+      height: reader.read(),
+    );
   }
 
   @override
@@ -20,6 +22,7 @@ class PokemonAdapter extends TypeAdapter<Pokemon> {
     writer.write(obj.id);
     writer.write(obj.name);
     writer.write(obj.pictureURL);
+    writer.writeList(obj.types);
     writer.write(obj.weight);
     writer.write(obj.height);
   }

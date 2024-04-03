@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pokemon_application/Entity/enum_poke_type.dart';
 import '../Entity/pokemon.dart';
 
 class PokemonView extends StatelessWidget {
@@ -38,7 +39,7 @@ class PokemonView extends StatelessWidget {
               ),
               Wrap(
                 children: [
-                  for (var t in pokemon.types)
+                  for (PokeType t in pokemon.types)
                     Container(
                       margin: const EdgeInsets.all(5.0),
                       padding: const EdgeInsets.all(5.0),

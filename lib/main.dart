@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:hive/hive.dart';
+import 'package:pokemon_application/Cache/poke_type_adapter.dart';
 import 'package:pokemon_application/Cache/pokemon_adapter.dart';
 
 import 'View/home_page.dart';
 
 void main() {
   Hive.registerAdapter(PokemonAdapter());
+  Hive.registerAdapter(PokeTypeAdapter());
   runApp(const MyApp());
 }
 

@@ -18,10 +18,11 @@ class Pokemon extends HiveObject {
   final String name;
   @HiveField(2)
   final String pictureURL;
-  final List<PokeType> types;
   @HiveField(3)
-  final int weight;
+  final List types;
   @HiveField(4)
+  final int weight;
+  @HiveField(5)
   final int height;
 
   factory Pokemon.fromJson(Map<String, dynamic> json) {
