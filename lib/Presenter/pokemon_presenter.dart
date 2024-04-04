@@ -27,7 +27,9 @@ class PokemonPresenter {
 
   Future<Pokemon> getPokemon(id) async {
     try {
-      return await pokemonInteractor.fetchPokemon(Client(), id);
+      final result = await pokemonInteractor.fetchPokemon(Client(), id);
+      pokemonInteractor.insertPokemonIntoDB(result);
+      return result;
     } on ClientException catch (_) {
       return pokemonInteractor.fetchPokemonFromDB(id);
     }

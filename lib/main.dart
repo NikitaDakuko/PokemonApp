@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:hive_flutter/hive_flutter.dart';
-import 'package:pokemon_application/Cache/poke_type_adapter.dart';
-import 'package:pokemon_application/Cache/pokemon_adapter.dart';
+import 'package:pokemon_application/Entity/pokemon.dart';
 
+import 'Cache/cache_db.dart';
+import 'Cache/poke_type_adapter.dart';
+import 'Cache/pokemon_adapter.dart';
 import 'View/home_page.dart';
 
-void main() {
-  Hive.initFlutter();
+void main() async {
+  await Hive.initFlutter();
   Hive.registerAdapter(PokemonAdapter());
   Hive.registerAdapter(PokeTypeAdapter());
+  await Hive.openBox<Pokemon>(CacheDB.dbName);
+
   runApp(const MyApp());
 }
 
@@ -27,4 +31,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
