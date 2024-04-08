@@ -1,11 +1,12 @@
 import 'package:collection/collection.dart' show mergeMaps;
+import 'package:get_it/get_it.dart';
 import 'package:http/http.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/router.dart';
 
 class PokemonPresenter {
-  final PokemonInteractor pokemonInteractor = PokemonInteractor();
+  final getIt = GetIt.instance;
   Map<String, dynamic> currentList = {};
   int offset = 0;
 
@@ -18,20 +19,22 @@ class PokemonPresenter {
 
   Future<Map<String, dynamic>> getPokemonList(int limit, int offset) async {
     try {
-      return await pokemonInteractor.fetchListOfPokemon(
-          Client(), limit, offset);
+      return await getIt<PokemonInteractor>()
+          .fetchListOfPokemon(Client(), limit, offset);
     } on ClientException catch (_) {
-      return await pokemonInteractor.fetchListOfPokemonFromDB(limit, offset);
+      return await getIt<PokemonInteractor>()
+          .fetchListOfPokemonFromDB(limit, offset);
     }
   }
 
   Future<Pokemon> getPokemon(id) async {
     try {
-      final result = await pokemonInteractor.fetchPokemon(Client(), id);
-      pokemonInteractor.insertPokemonIntoDB(result);
+      final result =
+          await getIt<PokemonInteractor>().fetchPokemon(Client(), id);
+      getIt<PokemonInteractor>().insertPokemonIntoDB(result);
       return result;
     } on ClientException catch (_) {
-      return pokemonInteractor.fetchPokemonFromDB(id);
+      return getIt<PokemonInteractor>().fetchPokemonFromDB(id);
     }
   }
 

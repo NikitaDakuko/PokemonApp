@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pokemon_application/Presenter/pokemon_presenter.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -10,19 +11,21 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  final PokemonPresenter pokemonPresenter = PokemonPresenter();
+  final getIt = GetIt.instance;
   late List<Widget> pokemonList = [];
 
   void _getPokemon(BuildContext context, int limit) async {
-    Map<String, dynamic> pl = await pokemonPresenter.nextPage(limit);
+    Map<String, dynamic> pl = await getIt<PokemonPresenter>().nextPage(limit);
     setState(() {
       List<Widget> newList = [];
       for (MapEntry<String, dynamic> s in pl.entries) {
         newList.add(SizedBox(
             width: 500,
             child: TextButton(
-                onPressed: () =>
-                    {pokemonPresenter.presentPokemon(context, s.value)},
+                onPressed: () => {
+                      getIt<PokemonPresenter>()
+                        ..presentPokemon(context, s.value)
+                    },
                 child: Text(
                   s.key,
                   style: const TextStyle(fontSize: 32),

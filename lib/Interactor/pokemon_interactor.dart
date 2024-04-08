@@ -1,11 +1,14 @@
 import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
+import 'package:get_it/get_it.dart';
 import 'package:pokemon_application/Cache/cache_db.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:http/http.dart' as http;
 
 class PokemonInteractor {
+  final getIt = GetIt.instance;
+
   Future<Pokemon> fetchPokemon(http.Client client, id) async {
     final response =
         await client.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$id/'));
@@ -20,7 +23,7 @@ class PokemonInteractor {
     final response = await client.get(Uri.parse(
         'https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
 
-    return compute(parseListOfPokemon, response.body);
+    return parseListOfPokemon(response.body);
   }
 
   Map<String, dynamic> parseListOfPokemon(String responseBody) {
@@ -37,21 +40,21 @@ class PokemonInteractor {
   }
 
   Future<Pokemon> fetchPokemonFromDB(id) async {
-    return await CacheDB.getPokemon(id);
+    return await getIt<CacheDB>().getPokemon(id);
   }
 
   Future<Map<String, dynamic>> fetchListOfPokemonFromDB(
       int limit, int offset) async {
     List<Pokemon> list =
-        await CacheDB.getListPokemon(limit: limit, offset: offset);
+        await getIt<CacheDB>().getListPokemon(limit: limit, offset: offset);
     return {for (var p in list) p.name: p.id};
   }
 
   void insertPokemonIntoDB(Pokemon p) {
-    CacheDB.insertPokemon(p);
+    getIt<CacheDB>().insertPokemon(p);
   }
 
   void insertAllPokemonIntoDB(List<Pokemon> pl) {
-    CacheDB.insertAllPokemon(pl);
+    getIt<CacheDB>().insertAllPokemon(pl);
   }
 }
