@@ -1,7 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
+import 'package:pokemon_application/BLoC/home_page_bloc.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/Presenter/pokemon_presenter.dart';
@@ -31,13 +33,16 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
-        useMaterial3: true,
+    return BlocProvider(
+      create: (_) => HomePageBloc(),
+      child: MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightGreen),
+          useMaterial3: true,
+        ),
+        home: const MyHomePage(title: 'Pokemon app'),
       ),
-      home: const MyHomePage(title: 'Pokemon app'),
     );
   }
 }
