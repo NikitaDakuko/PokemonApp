@@ -1,34 +1,30 @@
-import 'dart:convert';
-
-import 'package:flutter/foundation.dart';
+import 'package:dio/dio.dart';
 import 'package:get_it/get_it.dart';
 import 'package:pokemon_application/Cache/cache_db.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
-import 'package:http/http.dart' as http;
 
 class PokemonInteractor {
   final getIt = GetIt.instance;
 
-  Future<Pokemon> fetchPokemon(http.Client client, id) async {
+  Future<Pokemon> fetchPokemon(id) async {
     final response =
-        await client.get(Uri.parse('https://pokeapi.co/api/v2/pokemon/$id/'));
+        await getIt<Dio>().get('https://pokeapi.co/api/v2/pokemon/$id/');
 
-    final parsedJson = (jsonDecode(response.body));
-    final Pokemon pokemon = Pokemon.fromJson(parsedJson);
-    return pokemon;
+    return Pokemon.fromJson(response.data);
   }
 
-  Future<Map<String, dynamic>> fetchListOfPokemon(
-      http.Client client, int limit, int offset) async {
-    final response = await client.get(Uri.parse(
-        'https://pokeapi.co/api/v2/pokemon?offset=$offset&limit=$limit'));
+  Future<Map<String, dynamic>> fetchListOfPokemon(int limit, int offset) async {
+    final response = await getIt<Dio>().get(
+      'https://pokeapi.co/api/v2/pokemon',
+      queryParameters: {'limit': limit, 'offset': offset},
+    );
 
-    return parseListOfPokemon(response.body);
+    return parseListOfPokemon(response.data);
   }
 
-  Map<String, dynamic> parseListOfPokemon(String responseBody) {
-    final parsed = (jsonDecode(responseBody)['results'] as List)
-        .cast<Map<String, dynamic>>();
+  Map<String, dynamic> parseListOfPokemon(responseBody) {
+    final parsed =
+        (responseBody['results'] as List).cast<Map<String, dynamic>>();
 
     return Map.fromIterables(
       parsed.map<String>((json) => json['name']).toList(),

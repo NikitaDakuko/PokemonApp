@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:hive_flutter/hive_flutter.dart';
@@ -20,7 +21,7 @@ void main() async {
   getIt.registerSingleton<CacheDB>(CacheDB());
   getIt.registerSingleton<PokemonInteractor>(PokemonInteractor());
   getIt.registerSingleton<PokemonPresenter>(PokemonPresenter());
-
+  getIt.registerSingleton<Dio>(Dio());
 
   runApp(const MyApp());
 }

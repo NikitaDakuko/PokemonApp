@@ -1,6 +1,5 @@
 import 'package:collection/collection.dart' show mergeMaps;
 import 'package:get_it/get_it.dart';
-import 'package:http/http.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/router.dart';
@@ -20,8 +19,8 @@ class PokemonPresenter {
   Future<Map<String, dynamic>> getPokemonList(int limit, int offset) async {
     try {
       return await getIt<PokemonInteractor>()
-          .fetchListOfPokemon(Client(), limit, offset);
-    } on ClientException catch (_) {
+          .fetchListOfPokemon(limit, offset);
+    } catch (_) {
       return await getIt<PokemonInteractor>()
           .fetchListOfPokemonFromDB(limit, offset);
     }
@@ -30,10 +29,10 @@ class PokemonPresenter {
   Future<Pokemon> getPokemon(id) async {
     try {
       final result =
-          await getIt<PokemonInteractor>().fetchPokemon(Client(), id);
+          await getIt<PokemonInteractor>().fetchPokemon(id);
       getIt<PokemonInteractor>().insertPokemonIntoDB(result);
       return result;
-    } on ClientException catch (_) {
+    } catch (_) {
       return getIt<PokemonInteractor>().fetchPokemonFromDB(id);
     }
   }
