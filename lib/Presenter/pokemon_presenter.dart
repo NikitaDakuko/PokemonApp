@@ -40,7 +40,7 @@ class PokemonPresenter {
   void presentPokemon(context, id) async {
     Pokemon pokemon = await getPokemon(id);
     if (context.mounted) {
-      PokemonRouter().presentPokemon(context, pokemon);
+      getIt<PokemonRouter>().presentPokemon(context, pokemon);
     }
   }
 }

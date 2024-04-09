@@ -7,6 +7,7 @@ import 'package:pokemon_application/BLoC/home_page_bloc.dart';
 import 'package:pokemon_application/Entity/pokemon.dart';
 import 'package:pokemon_application/Interactor/pokemon_interactor.dart';
 import 'package:pokemon_application/Presenter/pokemon_presenter.dart';
+import 'package:pokemon_application/router.dart';
 
 import 'Cache/cache_db.dart';
 import 'Cache/poke_type_adapter.dart';
@@ -23,6 +24,7 @@ void main() async {
   getIt.registerSingleton<CacheDB>(CacheDB());
   getIt.registerSingleton<PokemonInteractor>(PokemonInteractor());
   getIt.registerSingleton<PokemonPresenter>(PokemonPresenter());
+  getIt.registerSingleton<PokemonRouter>(PokemonRouter());
   getIt.registerSingleton<Dio>(Dio());
 
   runApp(const MyApp());
