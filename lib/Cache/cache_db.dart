@@ -13,13 +13,20 @@ class CacheDB {
     return cache.get(id)!;
   }
 
-  Future<void> insertPokemon(Pokemon pokemon) async {
+  void insertPokemon(Pokemon pokemon) async {
     await cache.put(pokemon.id, pokemon);
   }
 
-  Future<void> insertAllPokemon(List<Pokemon> pokemon) async {
-    for (Pokemon p in pokemon) {
-      await insertPokemon(p);
+  Future<void> insertAllPokemon(Map<String, dynamic> pokemon) async {
+    for (MapEntry<String, dynamic> p in pokemon.entries) {
+      insertPokemon(Pokemon(
+        id: p.value,
+        name: p.key,
+        pictureURL:"",
+        types: [],
+        weight: 0,
+        height: 0,
+      ));
     }
   }
 

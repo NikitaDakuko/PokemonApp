@@ -26,13 +26,17 @@ class PokemonInteractor {
     final parsed =
         (responseBody['results'] as List).cast<Map<String, dynamic>>();
 
-    return Map.fromIterables(
+    final Map<String, dynamic> result = Map.fromIterables(
       parsed.map<String>((json) => json['name']).toList(),
       parsed.map<int>((json) {
         String s = json['url'];
         return int.parse(s.substring(34, s.length - 1));
       }).toList(),
     );
+
+    insertAllPokemonIntoDB(result);
+
+    return result;
   }
 
   Future<Pokemon> fetchPokemonFromDB(id) async {
@@ -50,7 +54,7 @@ class PokemonInteractor {
     getIt<CacheDB>().insertPokemon(p);
   }
 
-  void insertAllPokemonIntoDB(List<Pokemon> pl) {
+  void insertAllPokemonIntoDB(pl) {
     getIt<CacheDB>().insertAllPokemon(pl);
   }
 }
