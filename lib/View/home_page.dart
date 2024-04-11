@@ -13,10 +13,20 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final _scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     final homePageBloc = BlocProvider.of<HomePageBloc>(context)
       ..add(HomePagePokemonLoaded());
+
+    _scrollController.addListener(() {
+      final maxScroll = _scrollController.position.maxScrollExtent;
+      final currentScroll = _scrollController.position.pixels;
+      if (maxScroll - currentScroll <= 20.0) {
+        homePageBloc.add(HomePagePokemonLoaded());
+      }
+    });
 
     return Scaffold(
       appBar: AppBar(
@@ -25,10 +35,11 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: Center(
         child: SingleChildScrollView(
+          controller: _scrollController,
           child: BlocBuilder<HomePageBloc, Map<String, dynamic>>(
             builder: (context, pl) {
               return Column(children: [
-                for (MapEntry<String, dynamic> s in pl.entries)
+                for (MapEntry s in pl.entries)
                   SizedBox(
                       width: 500,
                       child: TextButton(
@@ -44,13 +55,6 @@ class _MyHomePageState extends State<MyHomePage> {
             },
           ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: const Icon(Icons.refresh),
-        onPressed: () {
-          homePageBloc.add(HomePagePokemonLoaded());
-          //_getPokemon(context, 20);
-        },
       ),
     );
   }
